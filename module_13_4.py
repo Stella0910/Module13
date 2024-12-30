@@ -22,7 +22,7 @@ async def set_age(message):
 
 @dp.message_handler(state=UserState.age)
 async def set_growth(message, state):
-    await state.update_data(first=message.text)
+    await state.update_data(age=message.text)
     data = await state.get_data()
     await message.answer('Введите свой рост:')
     await UserState.growth.set()
@@ -30,7 +30,7 @@ async def set_growth(message, state):
 
 @dp.message_handler(state=UserState.growth)
 async def set_weight(message, state):
-    await state.update_data(second=message.text)
+    await state.update_data(growth=message.text)
     data = await state.get_data()
     await message.answer('Введите свой вес:')
     await UserState.weight.set()
@@ -38,10 +38,10 @@ async def set_weight(message, state):
 
 @dp.message_handler(state=UserState.weight)
 async def send_calories(message, state):
-    await state.update_data(third=message.text)
+    await state.update_data(weight=message.text)
     data = await state.get_data()
-    norm_women = 10 * int(data['third']) + 6.25 * int(data['second']) - 5 * int(data['first']) - 161
-    norm_men = 10 * int(data['third']) + 6.25 * int(data['second']) - 5 * int(data['first']) + 5
+    norm_women = 10 * int(data['weight']) + 6.25 * int(data['growth']) - 5 * int(data['age']) - 161
+    norm_men = 10 * int(data['weight']) + 6.25 * int(data['growth']) - 5 * int(data['age']) + 5
     await message.answer(f'Норма калорий для женщины:  {norm_women}\n'
                          f'Норма калорий для мужчины:  {norm_men}')
     await state.finish()
